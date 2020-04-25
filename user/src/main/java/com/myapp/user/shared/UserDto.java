@@ -1,6 +1,9 @@
 package com.myapp.user.shared;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.myapp.user.model.AlbumResponseModel;
 
 public class UserDto implements Serializable{
 
@@ -11,7 +14,7 @@ public class UserDto implements Serializable{
 	private String password;
 	private String userId;
 	private String encryptedPassword;
-	
+	private List<AlbumResponseModel> albumList;
 	public String getFirstName() {
 		return firstName;
 	}
@@ -48,4 +51,11 @@ public class UserDto implements Serializable{
 	public void setEncryptedPassword(String encryptedPassword) {
 		this.encryptedPassword = encryptedPassword;
 	}
+	public List<AlbumResponseModel> getAlbumList() {
+		return albumList;
+	}
+	public void setAlbumList(List<AlbumResponseModel> albumList) {
+		this.albumList = albumList;
+	}
+	
 }

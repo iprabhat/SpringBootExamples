@@ -10,13 +10,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.myapp.user.model.CreateUserRequestModel;
 import com.myapp.user.model.CreateUserResponseModel;
+import com.myapp.user.model.UserResponseModel;
 import com.myapp.user.service.UserService;
 import com.myapp.user.shared.UserDto;
 
@@ -29,6 +32,9 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	RestTemplate restTemplate;
 	
 	@GetMapping("/status/check")
 	public String status() {
@@ -46,5 +52,14 @@ public class UserController {
 		UserDto createUser = userService.createUser(userDetails);
 		CreateUserResponseModel response = mapper.map(createUser, CreateUserResponseModel.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	}
+	
+	@GetMapping(value = "/{userId}", produces = 	{MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public ResponseEntity<UserResponseModel> getUser(@PathVariable("userId") String userId) {
+		
+		UserDto userDto = userService.getUserDetailsByUserId(userId);
+		UserResponseModel response = new ModelMapper().map(userDto, UserResponseModel.class);
+		response.setAlbums(userDto.getAlbumList());
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 }

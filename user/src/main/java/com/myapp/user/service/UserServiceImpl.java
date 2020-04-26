@@ -98,8 +98,10 @@ public class UserServiceImpl implements UserService {
 			LOGGER.error(e.getLocalizedMessage());
 		}
 		 */	
+		LOGGER.info("Before calling Album microservice");
 		albumList = albumServiceClient.getAlbums(userId);
-
+		LOGGER.info("After calling Album microservice");
+		
 		userDto.setAlbumList(albumList);
 		return userDto;
 	}
